@@ -13,7 +13,7 @@ $ npm install directory-tree
 
 ```js
 const dirTree = require('directory-tree');
-const tree = dirTree('/some/path');
+const tree = dirTree('/some/parentPath','/subPath');
 ```
 
 And you can also filter by an extensions regex:
@@ -21,14 +21,14 @@ This is useful for including only certain types of files.
 
 ```js
 const dirTree = require('directory-tree');
-const filteredTree = dirTree('/some/path', {extensions:/\.txt/});
+const filteredTree = dirTree('/some/parentPath','/subPath', {extensions:/\.txt/});
 ```
 
 You can also exclude paths from the tree using a regex:
 
 ```js
 const dirTree = require('directory-tree');
-const filteredTree = dirTree('/some/path', {exclude:/some_path_to_exclude/});
+const filteredTree = dirTree('/some/parentPath','/subPath', {exclude:/some_path_to_exclude/});
 ```
 
 A callback function can be executed with each file that matches the extensions provided:
@@ -37,7 +37,7 @@ A callback function can be executed with each file that matches the extensions p
 const PATH = require('path');
 const dirTree = require('directory-tree');
 
-const tree = dirTree('./test/test_data', {extensions:/\.txt$/}, (item, PATH) => {
+const tree = dirTree('/some/parentPath','/subPath', {extensions:/\.txt$/}, (item, PATH) => {
 	console.log(item);
 });
 ```
@@ -48,17 +48,19 @@ The callback function takes the directory item (has path, name, size, and extens
 Given a directory structured like this:
 
 ```
-photos
-├── summer
-│   └── june
-│       └── windsurf.jpg
-└── winter
-    └── january
-        ├── ski.png
-        └── snowboard.jpg
+parentPath
+├─photos
+  ├── summer
+  │   └── june
+  │       └── windsurf.jpg
+  └── winter
+      └── january
+          ├── ski.png
+          └── snowboard.jpg
 ```
 
 `directory-tree` will return this JS object:
+NOTE: parent Path is intentionally omitted to support intentional hiding of the full path e.g. to client-side application
 
 ```json
 {
